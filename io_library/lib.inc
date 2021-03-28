@@ -13,7 +13,15 @@ string_length:
   ret
 
 print_string:
-  xor rax, rax
+  push rdi
+  call string_length
+
+  mov rdx, rax ; rdx <- string length
+  pop rsi ; rsi <- string head
+  mov rax, 1 ; write syscall
+  mov rdi, 1 ; rdi <- file descriptor
+  syscall
+
   ret
 
 

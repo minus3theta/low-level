@@ -177,7 +177,7 @@ tests=[ Test('string_length',
         mov rax, 60
         xor rdi, rdi
         syscall""",
-        lambda i,o,r: i == o),
+        lambda i,o,r: i.encode('utf-8') == o),
 
         Test('string_copy',
             lambda v: """
