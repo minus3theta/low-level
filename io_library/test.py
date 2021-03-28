@@ -56,7 +56,7 @@ def launch( fname, seed = '' ):
     output = ''
     try:
         p = Popen(['./'+fname], shell=None, stdin=PIPE, stdout=PIPE)
-        (output, err) = p.communicate(input=seed.encode('utf-8'))
+        (output, err) = p.communicate(input=seed.encode())
         return (output, p.returncode)
     except CalledProcessError as exc:
         return (exc.output, exc.returncode)
@@ -177,7 +177,7 @@ tests=[ Test('string_length',
         mov rax, 60
         xor rdi, rdi
         syscall""",
-        lambda i,o,r: i.encode('utf-8') == o),
+        lambda i,o,r: i.encode() == o),
 
         Test('string_copy',
             lambda v: """
