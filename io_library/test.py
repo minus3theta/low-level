@@ -56,7 +56,7 @@ def launch( fname, seed = '' ):
     output = ''
     try:
         p = Popen(['./'+fname], shell=None, stdin=PIPE, stdout=PIPE)
-        (output, err) = p.communicate(input=seed)
+        (output, err) = p.communicate(input=seed.encode('utf-8'))
         return (output, p.returncode)
     except CalledProcessError as exc:
         return (exc.output, exc.returncode)
