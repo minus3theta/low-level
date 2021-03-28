@@ -26,7 +26,15 @@ print_string:
 
 
 print_char:
-  xor rax, rax
+  push di
+  mov rax, 1
+  mov rdi, 1
+  mov rsi, rsp
+  mov rdx, 1
+  syscall
+
+  pop di
+
   ret
 
 print_newline:

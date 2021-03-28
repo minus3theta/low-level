@@ -179,6 +179,20 @@ tests=[ Test('string_length',
         syscall""",
         lambda i,o,r: i.encode() == o),
 
+        Test('print_char',
+            lambda v:""" section .text
+        %include "lib.inc"
+        global _start
+        _start:
+        """ + before_call + """
+        mov rdi, '""" + v + """'
+        call print_char
+        """ + after_call + """
+        mov rax, 60
+        xor rdi, rdi
+        syscall""",
+        lambda i,o,r: i.encode() == o),
+
         Test('string_copy',
             lambda v: """
         section .data
@@ -197,20 +211,6 @@ tests=[ Test('string_length',
         """ + after_call + """
         mov rdi, arg2
         call print_string
-        mov rax, 60
-        xor rdi, rdi
-        syscall""",
-        lambda i,o,r: i == o),
-
-        Test('print_char',
-            lambda v:""" section .text
-        %include "lib.inc"
-        global _start
-        _start:
-        """ + before_call + """
-        mov rdi, '""" + v + """'
-        call print_char
-        """ + after_call + """
         mov rax, 60
         xor rdi, rdi
         syscall""",
