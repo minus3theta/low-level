@@ -396,7 +396,7 @@ tests=[ Test('string_length',
             err_too_long_msg: db "string is too long", 10, 0
             section .data
         arg1: db '""" + v + """', 0
-        arg2: times """ + str(len(v)/2)  +  """ db  66
+        arg2: times """ + str(len(v)//2)  +  """ db  66
         section .text
         %include "lib.inc"
         global _start
@@ -404,7 +404,7 @@ tests=[ Test('string_length',
         """ + before_call + """
         mov rdi, arg1
         mov rsi, arg2
-        mov rdx, """ + str(len(v)/2 ) + """
+        mov rdx, """ + str(len(v)//2 ) + """
         call string_copy
         test rax, rax
         jnz .good
