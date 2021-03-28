@@ -38,8 +38,8 @@ print_char:
   ret
 
 print_newline:
-  xor rax, rax
-  ret
+  mov rdi, 10
+  jmp print_char
 
 
 print_uint:
