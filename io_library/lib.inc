@@ -99,7 +99,15 @@ string_equals:
 
 
 read_char:
-  xor rax, rax
+  push 0
+
+  mov rax, 0 ; read syscall
+  mov rdi, 0 ; fd = stdin (0)
+  mov rsi, rsp ; buf
+  mov rdx, 1 ; count
+  syscall
+
+  pop rax
   ret
 
 read_word:
