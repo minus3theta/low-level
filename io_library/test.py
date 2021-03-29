@@ -219,7 +219,7 @@ tests=[ Test('string_length',
         mov rax, 60
         xor rdi, rdi
         syscall""",
-        lambda i, o, r: o == i),
+        lambda i, o, r: o == i.encode()),
 
         Test('read_char',
              lambda v:"""section .text

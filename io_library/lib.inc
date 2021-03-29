@@ -42,6 +42,18 @@ print_newline:
   jmp print_char
 
 
+print_int:
+  test rdi, rdi
+  jns print_uint
+
+  push rdi
+  mov rdi, '-'
+  call print_char
+  pop rdi
+
+  neg rdi
+  ; go to print_uint
+
 print_uint:
   ; rdi: 8-bytes unsigned integer
 
@@ -80,10 +92,6 @@ print_uint:
   add rsp, 24
   ret
 
-
-print_int:
-  xor rax, rax
-  ret
 
 string_equals:
   xor rax, rax
