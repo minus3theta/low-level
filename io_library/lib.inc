@@ -43,7 +43,41 @@ print_newline:
 
 
 print_uint:
-  xor rax, rax
+  ; rdi: 8-bytes unsigned integer
+
+  mov rax, rdi ; rax <- integer to print
+  mov rdi, rsp ; rdi <- end of buffer
+  ; allocate 24 bytes buffer
+  push 0
+  sub rsp, 16
+
+  ;      top
+  ; +-----------+ <- rsp
+  ; |           |
+  ; +-----------+
+  ; |           |
+  ; +-----------+
+  ; |         0 |
+  ; +-----------+ <- rdi
+  ;     bottom
+
+  dec rdi ; last character is '\0'
+  mov r8, 10 ; r8 is divisor
+
+.loop:
+  xor rdx, rdx ; clear rdx
+  div r8 ; rdx = rax % 10, rax /= 10
+  or rdx, 0x30 ; convert digit to char
+  dec rdi ; move buffer head to front
+  mov [rdi], dl ; save character to buffer
+  test rax, rax
+  jnz .loop ; loop if rax != 0
+
+  ; rdi: buffer (null terminated)
+  call print_string
+
+  ; release buffer
+  add rsp, 24
   ret
 
 
