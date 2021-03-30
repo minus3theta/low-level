@@ -111,6 +111,66 @@ read_char:
   ret
 
 read_word:
+  ; rdi: buf
+  ; rsi: buf size
+
+  push r14
+  push r15
+  xor r14, r14 ; r14: word len
+  mov r15, rsi ; r15: buf size
+  dec r15
+
+.skip_ws:
+  push rdi
+  call read_char
+  ; rax: char
+  pop rdi
+
+  cmp al, 0
+  je .end
+  cmp al, 0x20
+  je .skip_ws
+  cmp al, 0x09
+  je .skip_ws
+  cmp al, 0x0a
+  je .skip_ws
+  cmp al, 0x0d
+  je .skip_ws
+
+.loop:
+  mov [rdi + r14], al
+  inc r14
+
+  push rdi
+  call read_char
+  ; rax: char
+  pop rdi
+  cmp al, 0
+  je .end
+  cmp al, 0x20
+  je .end
+  cmp al, 0x09
+  je .end
+  cmp al, 0x0a
+  je .end
+  cmp al, 0x0d
+  je .end
+
+  cmp r14, r15
+  jne .loop
+
+  ; buffer overflow
+  xor rax, rax
+  pop r15
+  pop r14
+  ret
+
+.end:
+  mov [rdi + r14], byte 0
+  mov rax, rdi
+  mov rdx, r14
+  pop r15
+  pop r14
   ret
 
 ; rdi points to a string

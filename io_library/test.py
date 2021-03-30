@@ -253,7 +253,7 @@ tests=[ Test('string_length',
         mov rax, 60
         xor rdi, rdi
         syscall""",
-        lambda i, o, r: first_or_empty(i) == o),
+        lambda i, o, r: first_or_empty(i).encode() == o),
 
         Test('read_word_length',
              lambda v:"""
