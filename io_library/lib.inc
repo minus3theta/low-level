@@ -200,7 +200,17 @@ parse_uint:
 ; rdi points to a string
 ; returns rax: number, rdx : length
 parse_int:
-  xor rax, rax
+  movzx r9, byte [rdi]
+  cmp r9b, '-'
+  ; positive
+  jne parse_uint
+
+  ; negative
+  inc rdi
+  call parse_uint
+  ; rax: abs, rdx: length - 1
+  neg rax
+  inc rdx
   ret
 
 
