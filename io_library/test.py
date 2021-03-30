@@ -388,7 +388,7 @@ tests=[ Test('string_length',
         mov rax, 60
         xor rdi, rdi
         syscall""",
-        lambda i,o,r: i == o),
+        lambda i,o,r: i.encode() == o),
 
         Test('string_copy_too_long',
             lambda v: """
@@ -419,7 +419,7 @@ tests=[ Test('string_length',
         mov rax, 60
         xor rdi, rdi
         syscall""",
-        lambda i,o,r: o.find("too long") != -1 )
+        lambda i,o,r: o.decode().find("too long") != -1 )
         ]
 
 

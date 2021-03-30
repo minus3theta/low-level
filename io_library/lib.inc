@@ -231,5 +231,36 @@ parse_int:
   ret
 
 
+; rdi: src string
+; rsi: dest buf
+; rdx: buf length
 string_copy:
+  push rdi
+  push rsi
+  push rdx
+
+  call string_length
+  ; rax: length
+  pop rdx
+  pop rsi
+  pop rdi
+
+  cmp rax, rdx
+  jae .too_long
+
+  mov rax, rsi
+
+.loop:
+  mov dl, [rdi]
+  mov [rsi], dl
+  inc rdi
+  inc rsi
+
+  test dl, dl
+  jnz .loop
+
+  ret
+
+.too_long:
+  xor rax, rax
   ret
