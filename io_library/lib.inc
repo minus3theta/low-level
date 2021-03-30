@@ -93,7 +93,24 @@ print_uint:
   ret
 
 
+; rdi, rsi: string pointers
+; returns: 1 if equal, 0 otherwise
 string_equals:
+  mov al, byte [rdi]
+  cmp al, byte [rsi]
+  jne .diff
+
+  inc rdi
+  inc rsi
+
+  test al, al ; reached end of string
+  jnz string_equals
+
+  ; same
+  mov rax, 1
+  ret
+
+.diff:
   xor rax, rax
   ret
 
