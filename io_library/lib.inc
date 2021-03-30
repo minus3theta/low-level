@@ -176,7 +176,25 @@ read_word:
 ; rdi points to a string
 ; returns rax: number, rdx : length
 parse_uint:
-  xor rax, rax
+  xor rax, rax ; initialize number
+  xor rcx, rcx ; initialize length
+  mov r8, 10
+
+.loop:
+  movzx r9, byte [rdi + rcx]
+  cmp r9b, '0'
+  jb .end
+  cmp r9b, '9'
+  ja .end
+
+  inc rcx
+  and r9b, 0x0f
+  mul r8
+  add rax, r9
+  jmp .loop
+
+.end:
+  mov rdx, rcx
   ret
 
 ; rdi points to a string
