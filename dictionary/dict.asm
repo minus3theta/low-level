@@ -1,4 +1,4 @@
-.text:
+section .text
 
 extern string_equals
 
