@@ -1,10 +1,20 @@
-all: lib.o
+AFLAGS=-felf64
+ASM=nasm
 
-lib.o: lib.inc
-	nasm -f elf64 $< -o $@
+all: main
 
-%.o: %.asm
-	nasm -f elf64 $< -o $@
+main: main.o dict.o lib.o
+	ld -o main main.o dict.o lib.o
 
-%: %.o
-	ld -o $@ $<
+main.o: main.asm colon.inc words.inc
+	$(ASM) $(AFLAGS) main.asm
+
+lib.o: lib.asm
+	$(ASM) $(AFLAGS) lib.asm
+
+dict.o: dict.asm
+	$(ASM) $(AFLAGS) dict.asm
+
+
+clean:
+	rm -f main.o lib.o dict.o main
