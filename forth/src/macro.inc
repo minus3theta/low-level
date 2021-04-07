@@ -22,4 +22,15 @@ native %1, %2, 0
 %endmacro
 
 
+%macro colon 2
+section .data
+%%lw:
+dq head
+db %1, 0
+db 0
+xt_ %+ %2:
+dq i_docol
+%define head %%lw
+%endmacro
+
 %endif
