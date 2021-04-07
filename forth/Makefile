@@ -6,23 +6,27 @@
 #
 # ------------------------------------------------
 
-ASM			= nasm
-FLAGS		= -felf64 -g -Isrc/
-LINKER 		= ld
+ASM = nasm
+FLAGS = -felf64 -g -Isrc/
+LINKER = ld
 
-all: bin/forthress
+all: bin/forthress bin/itc
 
-bin/forthress: obj/forthress.o obj/util.o
-	mkdir -p bin
-	ld -o bin/forthress obj/forthress.o obj/util.o
+bin/forthress: obj/forthress.o obj/lib.o
+	$(LINKER) -o $@ $^
 
-obj/forthress.o: src/forthress.asm src/macro.inc src/words.inc src/util.inc
-	mkdir -p obj
-	$(ASM) $(FLAGS) src/forthress.asm -o obj/forthress.o
+obj/forthress.o: src/forthress.asm src/macro.inc src/words.inc src/lib.inc
+	$(ASM) $(FLAGS) $< -o $@
 
-obj/util.o: src/util.inc src/util.asm
-	mkdir -p obj
-	$(ASM) $(FLAGS) src/util.asm -o obj/util.o
+obj/lib.o: src/lib.asm src/lib.inc
+	$(ASM) $(FLAGS) $< -o $@
+
+obj/itc.o: example/itc.asm src/lib.inc
+	$(ASM) $(FLAGS) $< -o $@
+
+bin/itc: obj/itc.o obj/lib.o
+	$(LINKER) -o $@ $^
+
 clean:
 	$(RM) build/* obj/*
 
