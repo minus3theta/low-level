@@ -26,6 +26,19 @@ print_string:
 
   ret
 
+global print_string_err
+print_string_err:
+  push rdi
+  call string_length
+
+  mov rdx, rax
+  pop rsi
+  mov rax, 1
+  mov rdi, 2
+  syscall
+
+  ret
+
 global print_char
 print_char:
   push di

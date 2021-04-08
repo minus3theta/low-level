@@ -5,6 +5,7 @@ extern string_length
 extern print_newline
 extern print_char
 extern print_string
+extern print_string_err
 extern print_uint
 extern print_int
 extern parse_int
