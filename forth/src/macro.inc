@@ -10,9 +10,9 @@ dq head
 db %1, 0
 db %3
 xt_ %+ %2:
-dq %2 %+ _impl
+dq i_ %+ %2
 section .text
-%2 %+ _impl:
+i_ %+ %2:
 %define head %%lw
 %endmacro
 
@@ -29,7 +29,7 @@ dq head
 db %1, 0
 db %3
 xt_ %+ %2:
-dq i_docol
+dq docol
 %define head %%lw
 %endmacro
 
