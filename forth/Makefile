@@ -28,6 +28,6 @@ bin/itc: obj/itc.o obj/lib.o
 	$(LINKER) -o $@ $^
 
 clean:
-	$(RM) build/* obj/*
+	$(RM) bin/* obj/*
 
 .PHONY: clean
