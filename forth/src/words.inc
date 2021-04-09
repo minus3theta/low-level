@@ -1,5 +1,7 @@
 %include "macro.inc"
 
+; arithmetic
+
 native '+', plus
   pop rax
   add [rsp], rax
@@ -22,13 +24,6 @@ native '/', div
   xor rdx, rdx
   div rdi
   push rax
-  jmp next
-
-native 'swap', swap
-  pop rax
-  pop rdi
-  push rax
-  push rdi
   jmp next
 
 native '=', eq
@@ -54,6 +49,33 @@ colon '>', greater
   dq xt_less
   dq exit
 
+; logical
+
+native 'and', and
+  pop rax
+  pop rdi
+  test rax, rax
+  jz .false
+  xor rsi, rsi
+  test rdi, rdi
+  setnz sil
+  push rsi
+  jmp next
+
+.false:
+  push qword 0
+  jmp next
+
+native 'not', not
+  pop rax
+  xor rsi, rsi
+  test rax, rax
+  setz sil
+  push rsi
+  jmp next
+
+; stack operation
+
 native '.S', dot_s
   mov rsi, rsp
 .loop:
@@ -70,6 +92,40 @@ native '.S', dot_s
 
 .end:
   jmp next
+
+native 'rot', rot
+  pop rax
+  pop rdi
+  pop rsi
+  push rdi
+  push rax
+  push rsi
+  jmp next
+
+native 'swap', swap
+  pop rax
+  pop rdi
+  push rax
+  push rdi
+  jmp next
+
+native 'dup', dup
+  mov rax, [rsp]
+  push rax
+  jmp next
+
+native 'drop', drop
+  add rsp, 8
+  jmp next
+
+native '.', put
+  pop rdi
+  call print_int
+  mov rdi, 10
+  call print_char
+  jmp next
+
+; IO
 
 native 'emit', emit
   pop rdi
