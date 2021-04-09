@@ -67,12 +67,6 @@ docol:
   jmp next
 
 
-exit:
-  mov pc, [rstack]
-  add rstack, 8
-  jmp next
-
-
 section .data
 program_stub: dq 0
 xt_interpreter: dq .interpreter
@@ -91,6 +85,7 @@ section .text
 
 _start:
   mov [stack_base], rsp
+  mov rstack, rstack_start
 
 interpreter_loop:
   mov rdi, input_buf

@@ -1,5 +1,12 @@
 %include "macro.inc"
 
+; std
+
+native 'exit', exit
+  mov pc, [rstack]
+  add rstack, 8
+  jmp next
+
 ; arithmetic
 
 native '+', plus
@@ -47,7 +54,7 @@ native '<', less
 colon '>', greater
   dq xt_swap
   dq xt_less
-  dq exit
+  dq xt_exit
 
 ; logical
 
@@ -73,6 +80,14 @@ native 'not', not
   setz sil
   push rsi
   jmp next
+
+colon 'or', or
+  dq xt_not
+  dq xt_swap
+  dq xt_not
+  dq xt_and
+  dq xt_not
+  dq xt_exit
 
 ; stack operation
 
