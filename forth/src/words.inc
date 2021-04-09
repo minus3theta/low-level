@@ -156,3 +156,33 @@ native 'number', number
   add rsp, 256
   push qword 0
   jmp next
+
+; memory operation
+
+native 'mem', mem
+  push user_mem
+  jmp next
+
+native '!', store
+  pop rax
+  pop rdi
+  mov [rdi], rax
+  jmp next
+
+native 'c!', store_c
+  pop rax
+  pop rdi
+  mov [rdi], al
+  jmp next
+
+native '@', load
+  pop rdx
+  mov rax, [rdx]
+  push rax
+  jmp next
+
+native 'c@', load_c
+  pop rdx
+  movzx rax, byte [rdx]
+  push rax
+  jmp next
