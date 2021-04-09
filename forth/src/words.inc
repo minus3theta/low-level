@@ -127,9 +127,32 @@ native '.', put
 
 ; IO
 
+native 'key', key
+  call read_char
+  push rax
+  jmp next
+
 native 'emit', emit
   pop rdi
   call print_int
   mov rdi, 10
   call print_char
+  jmp next
+
+native 'number', number
+  sub rsp, 256
+  mov rdi, rsp
+  mov rsi, 256
+  call read_word
+  test rdx, rdx
+  jz .empty
+  mov rdi, rax
+  call parse_int
+  add rsp, 256
+  push rax
+  jmp next
+
+.empty:
+  add rsp, 256
+  push qword 0
   jmp next
