@@ -10,11 +10,34 @@ native '-', sub
   sub [rsp], rax
   jmp next
 
+native '*', mul
+  pop rax
+  mul qword [rsp]
+  mov [rsp], rax
+  jmp next
+
+native '/', div
+  pop rdi
+  pop rax
+  xor rdx, rdx
+  div rdi
+  push rax
+  jmp next
+
 native 'swap', swap
   pop rax
   pop rdi
   push rax
   push rdi
+  jmp next
+
+native '=', eq
+  pop rax
+  pop rdi
+  xor rsi, rsi
+  cmp rdi, rax
+  sete sil
+  push rsi
   jmp next
 
 native '<', less
