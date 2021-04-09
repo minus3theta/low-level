@@ -78,6 +78,8 @@ program_stub: dq 0
 xt_interpreter: dq .interpreter
 .interpreter: dq interpreter_loop
 
+stack_base: dq 0
+
 section .bss
 resq 1023
 rstack_start: resq 1
@@ -88,6 +90,7 @@ input_buf: resb 1024
 section .text
 
 _start:
+  mov [stack_base], rsp
 
 interpreter_loop:
   mov rdi, input_buf
