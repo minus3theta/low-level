@@ -7,6 +7,11 @@ native 'exit', exit
   add rstack, 8
   jmp next
 
+native 'lit', lit
+  push qword [pc]
+  add pc, 8
+  jmp next
+
 ; arithmetic
 
 native '+', plus

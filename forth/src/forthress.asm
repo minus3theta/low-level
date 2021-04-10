@@ -109,6 +109,20 @@ interpreter_loop:
   add rsp, 8
   mov rdi, rax
   call cfa
+
+  ; execute if in interpreter mode or immediate word
+  test qword [state], -1
+  jz .execute
+  test byte [rax-1], -1
+  jnz .execute
+
+  ; compile
+  mov rdi, [here]
+  mov [rdi], rax
+  add qword [here], 8
+  jmp interpreter_loop
+
+.execute:
   mov [program_stub], rax
   mov pc, program_stub
   jmp next
@@ -120,6 +134,15 @@ interpreter_loop:
   jz .unknown_word
 
   ; int literal
+  test qword [state], -1
+  jz .push_imm
+  mov rdi, [here]
+  mov qword [rdi], xt_lit
+  mov [rdi+8], rax
+  add qword [here], 16
+  jmp interpreter_loop
+
+.push_imm:
   push rax
   jmp interpreter_loop
 
