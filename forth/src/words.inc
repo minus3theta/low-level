@@ -201,3 +201,48 @@ native 'c@', load_c
   movzx rax, byte [rdx]
   push rax
   jmp next
+
+; word definition
+
+native ':', colon
+  mov rdi, input_buf
+  mov rsi, 1024
+  call read_word
+
+  ; header
+  ; link
+  mov r8, [here]
+  push r8
+  mov rsi, [last_word]
+  mov [r8], rsi
+  add r8, 8
+  ; name
+  push r8
+  mov rdi, rax
+  mov rsi, r8
+  mov rdx, 1024
+  call string_copy
+  mov rdi, rax
+  call string_length
+  pop r8
+  lea r8, [r8+rax+1]
+  ; flag
+  mov [r8], byte 0
+  inc r8
+  ; docol
+  mov qword [r8], docol
+
+  mov [here], r8
+
+  ; last_word
+  pop qword [last_word]
+  mov qword [state], 1
+
+  jmp next
+
+native ';', semicolon, 1
+  mov r8, [here]
+  mov qword [r8], xt_exit
+  add qword [here], 8
+  mov qword [state], 0
+  jmp next

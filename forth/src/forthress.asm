@@ -18,7 +18,7 @@ section .text
 
 ; rdi: word name string
 find_word:
-  mov rsi, head
+  mov rsi, [last_word]
 .loop:
   test rsi, rsi
   jz .not_found
@@ -74,10 +74,15 @@ xt_interpreter: dq .interpreter
 
 stack_base: dq 0
 
+state: dq 0
+here: dq user_dict
+last_word: dq head
+
 section .bss
 resq 1023
 rstack_start: resq 1
 user_mem: resq 65536
+user_dict: resq 65536
 
 input_buf: resb 1024
 
