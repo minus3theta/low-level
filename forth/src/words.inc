@@ -231,6 +231,7 @@ native ':', colon
   inc r8
   ; docol
   mov qword [r8], docol
+  add r8, 8
 
   mov [here], r8
 
